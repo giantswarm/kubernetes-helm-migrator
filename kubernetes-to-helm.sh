@@ -2,7 +2,7 @@
 
 set -eux
 
-PROJECT='aws-operator'
+PROJECT=$1
 WORKING_DIRECTORY="$GOPATH/src/github.com/giantswarm/$PROJECT"
 KUBERNETES_DIRECTORY="kubernetes"
 HELM_DIRECTORY="helm"
@@ -66,9 +66,12 @@ find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -name "*.yml" -exec b
 # e.g: {{ .BuildInfo.Sha }} becomes {{ .Sha }}.
 find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -type f -exec sed -i '' 's/{{ .BuildInfo/{{ /g' {} +
 
+# Convert any instances of '{{ .Installation' to '{{ .Values.Installation',
+# as these values are now handled by helm during installation.
+# e.g {{ .Installation.V1.GiantSwarm.API.Address.Host }} becomes {{ .Values.Installation.V1.GiantSwarm.API.Address.Host }}.
+find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -type f -exec sed -i '' 's/{{ .Installation/{{ .Values.Installation/g' {} +
+
 # checkout new branch
 git co -b add-helm-chart
-
 git add "$HELM_DIRECTORY"
-
 git commit -m "Adds helm chart"
