@@ -63,7 +63,7 @@ find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -name "*.yml" -exec b
 
 # Convert any instances of '%%DOCKER_TAG%%' to '{{ .Sha }}',
 # this is a hold over from our original templating work.
-find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -type f -exec sed -i '' 's/%%DOCKER_TAG%%/{{ .Sha }}/g' {} +
+find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -type f -exec sed -i '' 's/%%DOCKER_TAG%%/{{ .SHA }}/g' {} +
 
 # Convert any instances of '{{ .BuildInfo' to '{{ ',
 # as architect templating now provides build info as top level variables.
