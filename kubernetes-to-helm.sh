@@ -61,6 +61,10 @@ cp -r "./$KUBERNETES_DIRECTORY" "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECT
 # See https://stackoverflow.com/a/21985531/108452
 find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -name "*.yml" -exec bash -c 'mv "$1" "${1%.yml}".yaml' - '{}' \;
 
+# Convert any instances of '%%DOCKER_TAG%%' to '{{ .Sha }}',
+# this is a hold over from our original templating work.
+find "./$HELM_DIRECTORY/$CHART_NAME/$TEMPLATES_DIRECTORY/" -type f -exec sed -i '' 's/%%DOCKER_TAG%%/{{ .Sha }}/g' {} +
+
 # Convert any instances of '{{ .BuildInfo' to '{{ ',
 # as architect templating now provides build info as top level variables.
 # e.g: {{ .BuildInfo.Sha }} becomes {{ .Sha }}.
