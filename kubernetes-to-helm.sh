@@ -13,8 +13,6 @@ TEMPLATES_DIRECTORY="templates"
 
 echo "Converting $PROJECT ($WORKING_DIRECTORY) from kubernetes/ to helm chart"
 
-eval $( gpg-agent --daemon )
-
 cd $WORKING_DIRECTORY
 
 # Check the project state is okay - that a kubernetes directory exists,
